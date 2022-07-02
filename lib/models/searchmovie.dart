@@ -6,14 +6,14 @@ import 'dart:convert';
 
 class SearchedMovieModel {
   SearchedMovieModel({
-    required this.page,
-    required this.results,
-    required this.totalPages,
-    required this.totalResults,
+    this.page,
+    this.results,
+    this.totalPages,
+    this.totalResults,
   });
 
   int? page;
-  List<Result> results;
+  List<Result>? results;
   int? totalPages;
   int? totalResults;
 
@@ -33,7 +33,7 @@ class SearchedMovieModel {
 
   Map<String, dynamic> toJson() => {
         "page": page,
-        "results": List<dynamic>.from(results.map((x) => x.toJson())),
+        "results": List<dynamic>.from(results!.map((x) => x.toJson())),
         "total_pages": totalPages,
         "total_results": totalResults,
       };
