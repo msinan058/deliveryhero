@@ -17,16 +17,13 @@ class SearchedMovieModel {
   int? totalPages;
   int? totalResults;
 
-  factory SearchedMovieModel.fromRawJson(String str) =>
-      SearchedMovieModel.fromJson(json.decode(str));
+  factory SearchedMovieModel.fromRawJson(String str) => SearchedMovieModel.fromJson(json.decode(str));
 
   String toRawJson() => json.encode(toJson());
 
-  factory SearchedMovieModel.fromJson(Map<String, dynamic> json) =>
-      SearchedMovieModel(
+  factory SearchedMovieModel.fromJson(Map<String, dynamic> json) => SearchedMovieModel(
         page: json["page"],
-        results:
-            List<Result>.from(json["results"].map((x) => Result.fromJson(x))),
+        results: List<Result>.from(json["results"].map((x) => Result.fromJson(x))),
         totalPages: json["total_pages"],
         totalResults: json["total_results"],
       );
@@ -66,7 +63,7 @@ class Result {
   String? overview;
   double? popularity;
   String? posterPath;
-  DateTime? releaseDate;
+  String? releaseDate;
   String? title;
   bool? video;
   double? voteAverage;
@@ -86,7 +83,7 @@ class Result {
         overview: json["overview"],
         popularity: json["popularity"].toDouble(),
         posterPath: json["poster_path"],
-        releaseDate: DateTime.parse(json["release_date"]),
+        releaseDate: json["release_date"],
         title: json["title"],
         video: json["video"],
         voteAverage: json["vote_average"].toDouble(),
@@ -103,8 +100,7 @@ class Result {
         "overview": overview,
         "popularity": popularity,
         "poster_path": posterPath,
-        "release_date":
-            "${releaseDate?.year.toString().padLeft(4, '0')}-${releaseDate?.month.toString().padLeft(2, '0')}-${releaseDate?.day.toString().padLeft(2, '0')}",
+        "release_date": releaseDate,
         "title": title,
         "video": video,
         "vote_average": voteAverage,

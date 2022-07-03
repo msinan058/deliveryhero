@@ -4,6 +4,7 @@ import 'package:deliveryhero/Business/Cubits/cubit/search_page_cubit.dart';
 import 'package:deliveryhero/Views/movieDetailPage.dart';
 import 'package:deliveryhero/models/searchmovie.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class MovieCatalogView extends StatefulWidget {
@@ -83,7 +84,7 @@ class _MovieCatalogViewState extends State<MovieCatalogView> {
                               left: 10,
                               child: Text(
                                 widget.model.results![index].voteAverage.toString(),
-                                style: const TextStyle(color: Colors.blueAccent, fontSize: 17, fontWeight: FontWeight.bold),
+                                style: const TextStyle(color: Colors.red, fontSize: 18, fontWeight: FontWeight.bold),
                               ),
                             ),
                           ],
@@ -98,9 +99,11 @@ class _MovieCatalogViewState extends State<MovieCatalogView> {
     if (widget.scrollController.hasClients) {
       widget.scrollController.addListener(() async {
         if (widget.scrollController.position.maxScrollExtent == widget.scrollController.offset) {
-          context.read<SearchPageCubit>().searchMoreMovie(
-                widget.movieNameQuery,
-              );
+          SchedulerBinding.instance.addPostFrameCallback((_) {
+            context.read<SearchPageCubit>().searchMoreMovie(
+                  widget.movieNameQuery,
+                );
+          });
         }
       });
     }

@@ -46,7 +46,7 @@ class MovieDetailModel {
   final String? posterPath;
   final List<ProductionCompany> productionCompanies;
   final List<ProductionCountry> productionCountries;
-  final DateTime? releaseDate;
+  final String? releaseDate;
   final int? revenue;
   final int? runtime;
   final List<SpokenLanguage> spokenLanguages;
@@ -57,13 +57,11 @@ class MovieDetailModel {
   final double? voteAverage;
   final int? voteCount;
 
-  factory MovieDetailModel.fromRawJson(String str) =>
-      MovieDetailModel.fromJson(json.decode(str));
+  factory MovieDetailModel.fromRawJson(String str) => MovieDetailModel.fromJson(json.decode(str));
 
   String toRawJson() => json.encode(toJson());
 
-  factory MovieDetailModel.fromJson(Map<String, dynamic> json) =>
-      MovieDetailModel(
+  factory MovieDetailModel.fromJson(Map<String, dynamic> json) => MovieDetailModel(
         adult: json["adult"],
         backdropPath: json["backdrop_path"],
         belongsToCollection: json["belongs_to_collection"],
@@ -77,17 +75,12 @@ class MovieDetailModel {
         overview: json["overview"],
         popularity: json["popularity"].toDouble(),
         posterPath: json["poster_path"],
-        productionCompanies: List<ProductionCompany>.from(
-            json["production_companies"]
-                .map((x) => ProductionCompany.fromJson(x))),
-        productionCountries: List<ProductionCountry>.from(
-            json["production_countries"]
-                .map((x) => ProductionCountry.fromJson(x))),
-        releaseDate: DateTime.parse(json["release_date"]),
+        productionCompanies: List<ProductionCompany>.from(json["production_companies"].map((x) => ProductionCompany.fromJson(x))),
+        productionCountries: List<ProductionCountry>.from(json["production_countries"].map((x) => ProductionCountry.fromJson(x))),
+        releaseDate: json["release_date"],
         revenue: json["revenue"],
         runtime: json["runtime"],
-        spokenLanguages: List<SpokenLanguage>.from(
-            json["spoken_languages"].map((x) => SpokenLanguage.fromJson(x))),
+        spokenLanguages: List<SpokenLanguage>.from(json["spoken_languages"].map((x) => SpokenLanguage.fromJson(x))),
         status: json["status"],
         tagline: json["tagline"],
         title: json["title"],
@@ -110,16 +103,12 @@ class MovieDetailModel {
         "overview": overview,
         "popularity": popularity,
         "poster_path": posterPath,
-        "production_companies":
-            List<dynamic>.from(productionCompanies.map((x) => x.toJson())),
-        "production_countries":
-            List<dynamic>.from(productionCountries.map((x) => x.toJson())),
-        "release_date":
-            "${releaseDate?.year.toString().padLeft(4, '0')}-${releaseDate?.month.toString().padLeft(2, '0')}-${releaseDate?.day.toString().padLeft(2, '0')}",
+        "production_companies": List<dynamic>.from(productionCompanies.map((x) => x.toJson())),
+        "production_countries": List<dynamic>.from(productionCountries.map((x) => x.toJson())),
+        "release_date": releaseDate,
         "revenue": revenue,
         "runtime": runtime,
-        "spoken_languages":
-            List<dynamic>.from(spokenLanguages.map((x) => x.toJson())),
+        "spoken_languages": List<dynamic>.from(spokenLanguages.map((x) => x.toJson())),
         "status": status,
         "tagline": tagline,
         "title": title,
@@ -166,13 +155,11 @@ class ProductionCompany {
   final String? name;
   final String? originCountry;
 
-  factory ProductionCompany.fromRawJson(String str) =>
-      ProductionCompany.fromJson(json.decode(str));
+  factory ProductionCompany.fromRawJson(String str) => ProductionCompany.fromJson(json.decode(str));
 
   String toRawJson() => json.encode(toJson());
 
-  factory ProductionCompany.fromJson(Map<String, dynamic> json) =>
-      ProductionCompany(
+  factory ProductionCompany.fromJson(Map<String, dynamic> json) => ProductionCompany(
         id: json["id"],
         logoPath: json["logo_path"] == null ? null : json["logo_path"],
         name: json["name"],
@@ -196,13 +183,11 @@ class ProductionCountry {
   final String? iso31661;
   final String? name;
 
-  factory ProductionCountry.fromRawJson(String str) =>
-      ProductionCountry.fromJson(json.decode(str));
+  factory ProductionCountry.fromRawJson(String str) => ProductionCountry.fromJson(json.decode(str));
 
   String toRawJson() => json.encode(toJson());
 
-  factory ProductionCountry.fromJson(Map<String, dynamic> json) =>
-      ProductionCountry(
+  factory ProductionCountry.fromJson(Map<String, dynamic> json) => ProductionCountry(
         iso31661: json["iso_3166_1"],
         name: json["name"],
       );
@@ -224,8 +209,7 @@ class SpokenLanguage {
   final String? iso6391;
   final String? name;
 
-  factory SpokenLanguage.fromRawJson(String str) =>
-      SpokenLanguage.fromJson(json.decode(str));
+  factory SpokenLanguage.fromRawJson(String str) => SpokenLanguage.fromJson(json.decode(str));
 
   String toRawJson() => json.encode(toJson());
 
