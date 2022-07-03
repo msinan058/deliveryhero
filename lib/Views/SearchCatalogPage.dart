@@ -33,57 +33,72 @@ class _SearchMoviePageState extends State<SearchMoviePage> {
         },
         child: BlocBuilder<SearchPageCubit, SearchPageState>(
           builder: (context, state) {
-            return SingleChildScrollView(
+            return CustomScrollView(
               controller: scrollController,
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  TextFormField(
-                    decoration: const InputDecoration(
-                      border: OutlineInputBorder(),
-                      hintText: 'Search movie',
-                    ),
-                    controller: tecSearchmovie,
-                    onChanged: (value) async {
-                      if (value.length >= 2) {
-                        if (!_isWriting) {
-                          _isWriting = true;
-                          setState(() {});
-                          Future.delayed(const Duration(milliseconds: 1500)).whenComplete(() {
-                            _isWriting = false;
-                            context.read<SearchPageCubit>().searchMovie(value);
-                          });
-                        }
-                      } else {
-                        context.read<SearchPageCubit>().searchMovieClear();
-                      }
-                    },
+              slivers: [
+                SliverAppBar(
+                  title: searchTextField(context),
+                  floating: true,
+                  backgroundColor: Colors.white,
+                ),
+                const SliverToBoxAdapter(
+                  child: Padding(padding: EdgeInsets.all(10)),
+                ),
+                if (state is SearchPageLoaded)
+                  SliverToBoxAdapter(
+                    child: MovieCatalogView(state.model, tecSearchmovie.text, scrollController),
                   ),
-                  state is SearchPageLoaded ? MovieCatalogView(state.model, tecSearchmovie.text, scrollController) : Container(),
-                  state is SearchPageLoading
-                      ? const Padding(
+                state is SearchPageLoading
+                    ? const SliverToBoxAdapter(
+                        child: Padding(
                           padding: EdgeInsets.all(20.0),
                           child: CircularProgressIndicator(
                             color: Colors.grey,
                           ),
-                        )
-                      : Container(),
-                  state is SearchPageFailed
-                      ? const Padding(
-                          padding: EdgeInsets.all(20.0),
-                          child: Expanded(
-                            child: Text(
-                              "An Error Accured Or Movie Not Found Please Try Again",
-                              style: TextStyle(fontSize: 20, color: Colors.red),
-                            ),
-                          ))
-                      : Container()
-                ],
-              ),
+                        ),
+                      )
+                    : SliverToBoxAdapter(child: Container()),
+                state is SearchPageFailed
+                    ? const SliverToBoxAdapter(
+                        child: Padding(
+                            padding: EdgeInsets.all(20.0),
+                            child: Expanded(
+                              child: Text(
+                                "An Error Accured Or Movie Not Found Please Try Again",
+                                style: TextStyle(fontSize: 20, color: Colors.red),
+                              ),
+                            )),
+                      )
+                    : SliverToBoxAdapter(child: Container())
+              ],
             );
           },
         ),
       ),
+    );
+  }
+
+  TextFormField searchTextField(BuildContext context) {
+    return TextFormField(
+      decoration: const InputDecoration(
+        border: OutlineInputBorder(),
+        hintText: 'Search movie',
+      ),
+      controller: tecSearchmovie,
+      onChanged: (value) async {
+        if (value.length >= 2) {
+          if (!_isWriting) {
+            _isWriting = true;
+            setState(() {});
+            Future.delayed(const Duration(milliseconds: 1500)).whenComplete(() {
+              _isWriting = false;
+              context.read<SearchPageCubit>().searchMovie(value);
+            });
+          }
+        } else {
+          context.read<SearchPageCubit>().searchMovieClear();
+        }
+      },
     );
   }
 }
