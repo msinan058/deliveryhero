@@ -60,6 +60,7 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
                     child: Column(
                       children: [
                         Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             SizedBox(
                               width: 170,
