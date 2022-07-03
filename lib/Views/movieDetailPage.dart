@@ -31,7 +31,29 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
                     quarterTurns: 45,
                     child: Align(
                       alignment: Alignment.center,
-                      child: ImageView(state),
+                      child: Image.network(
+                        imageBaseUrl + state.model.backdropPath.toString(),
+                        color: Colors.white.withOpacity(0.7),
+                        colorBlendMode: BlendMode.modulate,
+                        errorBuilder: (context, exception, stackTrace) {
+                          return const Image(
+                            image: AssetImage("assets/placeholder.jpg"),
+                          );
+                        },
+                        loadingBuilder: (context, widget, loadingProgress) {
+                          if (loadingProgress == null) {
+                            return widget;
+                          }
+                          return Center(
+                            child: CircularProgressIndicator(
+                              value: loadingProgress.expectedTotalBytes != null
+                                  ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes!
+                                  : null,
+                              color: Colors.grey,
+                            ),
+                          );
+                        },
+                      ),
                     ),
                   ),
                   SingleChildScrollView(
@@ -40,8 +62,8 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
                         Row(
                           children: [
                             SizedBox(
-                              width: 200,
-                              height: 300,
+                              width: 170,
+                              height: 220,
                               child: Stack(children: [
                                 Image.network(
                                   imageBaseUrl + widget.movieResult.posterPath.toString(),
@@ -94,30 +116,6 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
           },
         ),
       ),
-    );
-  }
-
-  Image ImageView(MovieDetailPageLoaded state) {
-    return Image.network(
-      imageBaseUrl + state.model.backdropPath.toString(),
-      color: Colors.white.withOpacity(0.7),
-      colorBlendMode: BlendMode.modulate,
-      errorBuilder: (context, exception, stackTrace) {
-        return const Image(
-          image: AssetImage("assets/placeholder.jpg"),
-        );
-      },
-      loadingBuilder: (context, widget, loadingProgress) {
-        if (loadingProgress == null) {
-          return widget;
-        }
-        return Center(
-          child: CircularProgressIndicator(
-            value: loadingProgress.expectedTotalBytes != null ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes! : null,
-            color: Colors.grey,
-          ),
-        );
-      },
     );
   }
 }
